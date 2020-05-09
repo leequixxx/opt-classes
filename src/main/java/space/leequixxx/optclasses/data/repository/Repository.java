@@ -1,15 +1,16 @@
 package space.leequixxx.optclasses.data.repository;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface Repository<T> {
-    T get(long id);
+    T get(String id) throws Exception;
 
-    List<T> all();
+    List<T> all() throws Exception;
 
-    void add(T entity);
+    void add(T entity) throws Exception;
 
-    void remove(T entity);
+    void remove(T entity) throws Exception;
 
-    void update(T entity);
+    void update(T entity) throws Exception;
 }

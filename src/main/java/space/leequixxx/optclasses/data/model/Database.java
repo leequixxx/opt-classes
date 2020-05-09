@@ -8,6 +8,9 @@ public class Database implements Serializable {
         this.path = path;
     }
 
+    public Database() {
+    }
+
     private String name;
     private String path;
 

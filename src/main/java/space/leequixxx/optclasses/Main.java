@@ -3,9 +3,10 @@ package space.leequixxx.optclasses;
 import com.github.weisj.darklaf.LafManager;
 import com.github.weisj.darklaf.theme.DarculaTheme;
 import space.leequixxx.optclasses.data.Settings;
-import space.leequixxx.optclasses.data.model.Database;
+import space.leequixxx.optclasses.locale.Language;
 import space.leequixxx.optclasses.locale.Localization;
-import space.leequixxx.optclasses.ui.DatabaseSelect;
+import space.leequixxx.optclasses.theme.UiTheme;
+import space.leequixxx.optclasses.ui.DatabaseSelectDialog;
 
 import javax.swing.*;
 import java.io.File;
@@ -14,12 +15,15 @@ import java.util.Locale;
 
 public class Main {
     public static void main(String[] args) {
-        LafManager.install(new DarculaTheme());
+        LafManager.install(UiTheme.getDefaultTheme().getTheme());
 
         loadSettingsOrExit();
-        Localization.getInstance().change(Locale.getDefault());
+        Settings settings = Settings.getInstance();
 
-        DatabaseSelect dbSelect = new DatabaseSelect();
+        Localization.getInstance().change(Language.getLanguageByTag(Settings.getInstance().getLanguage()));
+        LafManager.install(UiTheme.getUiThemeByName(settings.getTheme()).getTheme());
+
+        DatabaseSelectDialog dbSelect = new DatabaseSelectDialog();
         dbSelect.pack();
         dbSelect.setVisible(true);
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="space.leequixxx.optclasses.ui.DatabaseCreate">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="space.leequixxx.optclasses.ui.DatabaseInputDialog">
   <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
@@ -63,7 +63,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="6364b" class="javax.swing.JLabel">
+          <component id="6364b" class="javax.swing.JLabel" binding="databasePathLabel">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <forms/>
@@ -102,7 +102,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="441e" class="javax.swing.JLabel">
+          <component id="441e" class="javax.swing.JLabel" binding="databaseNameLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <forms/>

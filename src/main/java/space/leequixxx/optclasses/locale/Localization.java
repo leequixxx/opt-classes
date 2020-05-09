@@ -1,6 +1,7 @@
 package space.leequixxx.optclasses.locale;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,11 +26,11 @@ public class Localization {
         throw new CloneNotSupportedException("This is a singleton");
     }
 
-    public void change(Locale locale) {
-        Locale.setDefault(locale);
+    public void change(Language language) {
+        Locale.setDefault(language.getLocale());
 
         listeners.forEach(listener -> {
-            listener.onLocaleChange(locale);
+            listener.onLocaleChange(language.getLocale());
         });
     }
 

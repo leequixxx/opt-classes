@@ -1,6 +1,8 @@
 package space.leequixxx.optclasses.data;
 
 import space.leequixxx.optclasses.data.model.Database;
+import space.leequixxx.optclasses.locale.Language;
+import space.leequixxx.optclasses.theme.UiTheme;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,7 +14,8 @@ public class Settings implements Serializable {
     private static String path;
 
     private final List<Database> databases = new ArrayList<>();
-    private Locale locale = Locale.getDefault();
+    private String language = Locale.getDefault().toLanguageTag();
+    private String theme = UiTheme.getDefaultTheme().getName();
 
     private Settings() {
     }
@@ -68,7 +71,19 @@ public class Settings implements Serializable {
         return databases;
     }
 
-    public Locale getLocale() {
-        return locale;
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 }
