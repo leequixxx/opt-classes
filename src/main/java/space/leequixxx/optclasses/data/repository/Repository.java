@@ -1,6 +1,5 @@
 package space.leequixxx.optclasses.data.repository;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface Repository<T> {
@@ -8,9 +7,9 @@ public interface Repository<T> {
 
     List<T> all() throws Exception;
 
-    void add(T entity) throws Exception;
+    T add(T entity) throws Exception;
 
     void remove(T entity) throws Exception;
 
-    void update(T entity) throws Exception;
+    T update(T entity) throws Exception;
 }

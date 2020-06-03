@@ -14,6 +14,7 @@ public class Settings implements Serializable {
     private static String path;
 
     private final List<Database> databases = new ArrayList<>();
+    private Database database = null;
     private String language = Locale.getDefault().toLanguageTag();
     private String theme = UiTheme.getDefaultTheme().getName();
 
@@ -85,5 +86,13 @@ public class Settings implements Serializable {
 
     public void setTheme(String theme) {
         this.theme = theme;
+    }
+
+    public Database getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(Database database) {
+        this.database = database;
     }
 }

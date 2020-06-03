@@ -25,7 +25,9 @@ public class Main {
 
         DatabaseSelectDialog dbSelect = new DatabaseSelectDialog();
         dbSelect.pack();
-        dbSelect.setVisible(true);
+        if (settings.getDatabase() == null) {
+            dbSelect.setVisible(true);
+        }
     }
 
     private static void loadSettingsOrExit() {

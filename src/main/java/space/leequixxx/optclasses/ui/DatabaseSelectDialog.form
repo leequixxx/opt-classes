@@ -69,6 +69,7 @@
                       <forms defaultalign-horz="false" defaultalign-vert="false"/>
                     </constraints>
                     <properties>
+                      <enabled value="false"/>
                       <text resource-bundle="global_strings" key="open"/>
                     </properties>
                   </component>

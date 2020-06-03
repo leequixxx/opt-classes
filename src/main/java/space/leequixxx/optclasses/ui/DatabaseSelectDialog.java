@@ -1,5 +1,6 @@
 package space.leequixxx.optclasses.ui;
 
+import com.github.weisj.darklaf.listener.MouseClickListener;
 import space.leequixxx.optclasses.data.Settings;
 import space.leequixxx.optclasses.data.model.Database;
 import space.leequixxx.optclasses.locale.Language;
@@ -11,9 +12,7 @@ import space.leequixxx.optclasses.ui.view.DatabaseSelectView;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.*;
 
 public class DatabaseSelectDialog extends JDialog implements DatabaseSelectView, LocaleChangeListener {
@@ -44,6 +43,10 @@ public class DatabaseSelectDialog extends JDialog implements DatabaseSelectView,
 
         databasesList.setModel(databaseListModel);
 
+        if (Settings.getInstance().getDatabase() != null) {
+            presenter.openDatabase(Settings.getInstance().getDatabase());
+        }
+
         bind();
     }
 
@@ -52,14 +55,11 @@ public class DatabaseSelectDialog extends JDialog implements DatabaseSelectView,
     }
 
     private void onExit(EventObject e) {
-        this.setVisible(false);
-        System.exit(0);
+        presenter.exit();
     }
 
     private void onSettings(EventObject e) {
-        SettingsDialog dialog = new SettingsDialog(Settings.getInstance());
-        dialog.pack();
-        dialog.setVisible(true);
+        presenter.settings();
     }
 
     private void onCreateDatabase(EventObject e) {
@@ -78,18 +78,31 @@ public class DatabaseSelectDialog extends JDialog implements DatabaseSelectView,
         }
     }
 
+    private void onOpenDatabase(EventObject e) {
+        if (!databasesList.isSelectionEmpty()) {
+            presenter.openDatabase(databasesList.getSelectedValue());
+        }
+    }
+
     private void onSelectDatabase(ListSelectionEvent e) {
         editDatabaseButton.setEnabled(true);
         deleteDatabaseButton.setEnabled(true);
+        openDatabaseButton.setEnabled(true);
     }
 
     private void bind() {
         syncDatabasesWithListModel(Settings.getInstance().getDatabases());
 
         databasesList.registerKeyboardAction(this::onDeleteDatabase, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        databasesList.addMouseListener((MouseClickListener) mouseEvent -> {
+            if (mouseEvent.getButton() == MouseEvent.BUTTON1 && mouseEvent.getClickCount() > 1) {
+                onOpenDatabase(mouseEvent);
+            }
+        });
         createDatabaseButton.addActionListener(this::onCreateDatabase);
         editDatabaseButton.addActionListener(this::onEditDatabase);
         deleteDatabaseButton.addActionListener(this::onDeleteDatabase);
+        openDatabaseButton.addActionListener(this::onOpenDatabase);
         exitButton.addActionListener(this::onExit);
         settingsButton.addActionListener(this::onSettings);
         addWindowListener(new WindowAdapter() {
@@ -128,5 +141,20 @@ public class DatabaseSelectDialog extends JDialog implements DatabaseSelectView,
     @Override
     public void onDatabaseRemove(Database database) {
         databaseListModel.removeElement(database);
+    }
+
+    @Override
+    public void onDatabaseOpen(Database database) {
+        setVisible(false);
+    }
+
+    @Override
+    public void onDatabaseClose(Database database) {
+        setVisible(true);
+    }
+
+    @Override
+    public void onExit() {
+        setVisible(false);
     }
 }

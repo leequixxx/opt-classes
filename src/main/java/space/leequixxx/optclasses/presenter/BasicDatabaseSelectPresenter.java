@@ -7,10 +7,16 @@ import space.leequixxx.optclasses.data.repository.observer.SqliteDatabaseCreateO
 import space.leequixxx.optclasses.data.repository.observer.SqliteDatabaseCreateOnUpdateObserver;
 import space.leequixxx.optclasses.ui.ConfirmationDialog;
 import space.leequixxx.optclasses.ui.DatabaseInputDialog;
+import space.leequixxx.optclasses.ui.SettingsDialog;
+import space.leequixxx.optclasses.ui.StudentsAndFacultiesFrame;
 import space.leequixxx.optclasses.ui.view.DatabaseSelectView;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class BasicDatabaseSelectPresenter implements DatabaseSelectPresenter {
@@ -24,6 +30,19 @@ public class BasicDatabaseSelectPresenter implements DatabaseSelectPresenter {
         this.repository.addAddObserver(new SqliteDatabaseCreateOnAddObserver());
         this.repository.addUpdateObserver(new SqliteDatabaseCreateOnUpdateObserver());
         this.messageBundle = ResourceBundle.getBundle("message_strings");
+    }
+
+    @Override
+    public void exit() {
+        view.onExit();
+        System.exit(0);
+    }
+
+    @Override
+    public void settings() {
+        SettingsDialog dialog = new SettingsDialog(Settings.getInstance());
+        dialog.pack();
+        dialog.setVisible(true);
     }
 
     @Override
@@ -91,12 +110,56 @@ public class BasicDatabaseSelectPresenter implements DatabaseSelectPresenter {
         }
     }
 
+    @Override
+    public void openDatabase(Database database) {
+        Settings.getInstance().setDatabase(database);
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:" + database.getPath());
+            Settings.save();
+        } catch (IOException e) {
+            saveSettingsError(e);
+        } catch (SQLException e) {
+            databaseError(e);
+            return;
+        }
+
+        StudentsAndFacultiesFrame studentsAndFacultiesFrame = new StudentsAndFacultiesFrame(this, database, connection);
+        studentsAndFacultiesFrame.pack();
+        studentsAndFacultiesFrame.setVisible(true);
+        this.view.onDatabaseOpen(database);
+    }
+
+    @Override
+    public void closeDatabase(Database database, Connection connection) {
+        Settings.getInstance().setDatabase(null);
+        try {
+            connection.close();
+            Settings.save();
+        } catch (IOException e) {
+            saveSettingsError(e);
+        } catch (SQLException e) {
+            databaseError(e);
+        }
+        view.onDatabaseClose(database);
+    }
+
     private void saveSettingsError(Exception e) {
         JFrame frame = new JFrame();
         JOptionPane.showMessageDialog(
                 frame,
                 messageBundle.getString("save_settings_error_text") + "\r\n" + e.getLocalizedMessage(),
                 messageBundle.getString("save_settings_error_title"),
+                JOptionPane.ERROR_MESSAGE
+        );
+    }
+
+    private void databaseError(Exception e) {
+        JFrame frame = new JFrame();
+        JOptionPane.showMessageDialog(
+                frame,
+                messageBundle.getString("database_error_text") + "\r\n" + e.getLocalizedMessage(),
+                messageBundle.getString("database_error_title"),
                 JOptionPane.ERROR_MESSAGE
         );
     }

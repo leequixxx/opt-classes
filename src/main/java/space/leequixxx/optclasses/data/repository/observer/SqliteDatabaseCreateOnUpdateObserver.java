@@ -18,7 +18,10 @@ public class SqliteDatabaseCreateOnUpdateObserver implements UpdateEntityObserve
                     "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     "name VARCHAR(50) NOT NULL," +
                     "surname VARCHAR(80) NOT NULL," +
-                    "patronymic VARCHAR(60)" +
+                    "patronymic VARCHAR(60)," +
+                    "group_number VARCHAR(10)," +
+                    "average_mark UNSIGNED INTEGER(2) NOT NULL," +
+                    "faculties VARCHAR(20)" +
                     ")");
             statement.close();
         }

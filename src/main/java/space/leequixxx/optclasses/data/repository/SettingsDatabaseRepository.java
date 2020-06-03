@@ -34,7 +34,7 @@ public class SettingsDatabaseRepository implements Repository<Database>, Reposit
     }
 
     @Override
-    public void add(Database entity) throws Exception {
+    public Database add(Database entity) throws Exception {
         settings.getDatabases().add(entity);
         Settings.save();
 
@@ -42,6 +42,8 @@ public class SettingsDatabaseRepository implements Repository<Database>, Reposit
                 addEntityObservers) {
             observer.onAction(entity);
         }
+
+        return entity;
     }
 
     @Override
@@ -56,13 +58,15 @@ public class SettingsDatabaseRepository implements Repository<Database>, Reposit
     }
 
     @Override
-    public void update(Database entity) throws Exception {
+    public Database update(Database entity) throws Exception {
         Settings.save();
 
         for (EntityObserver<Database> observer :
                 updateEntityObservers) {
             observer.onAction(entity);
         }
+
+        return entity;
     }
 
     @Override
