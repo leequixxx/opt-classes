@@ -15,7 +15,7 @@
         <darklaf.version>[2.0.3,)</darklaf.version>
         <commons-text.version>1.8</commons-text.version>
         <commons-collections4.version>4.4</commons-collections4.version>
-        <sqlite-jdbc.version>3.30.1</sqlite-jdbc.version>
+        <sqlite-jdbc.version>3.41.2.2</sqlite-jdbc.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
